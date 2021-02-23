@@ -14,16 +14,33 @@ class BirthdayPal extends StatelessWidget {
           supportedLocales: localizationContext.supportedLocales,
           locale: localizationContext.locale,
           title: 'BirthdayPal',
-          home: Scaffold(
-            appBar: AppBar(
-              title: Text('Material App Bar'),
-            ),
-            body: Center(
-              child: Container(
-                child: Text('Hello World'),
-              ),
-            ),
-          ),
+          home: HomePage(),
+        ),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.add),
+        ),
+      ),
+      appBar: AppBar(
+        title: Text('Birthday Pal'),
+      ),
+      body: Center(
+        child: Container(
+          child: Text('Hello World'),
         ),
       ),
     );
