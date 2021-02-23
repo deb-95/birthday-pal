@@ -33,8 +33,14 @@ class FormBody extends StatefulWidget {
 
 class _FormBodyState extends State<FormBody> {
   final TextEditingController _dateController = TextEditingController();
-
   final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +53,19 @@ class _FormBodyState extends State<FormBody> {
         children: [
           TextFormField(
             controller: _nameController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               icon: Icon(Icons.person),
-              labelText: 'Name',
+              labelText: tr('name'),
             ),
             validator: (String value) {
-              return value.isNotEmpty ? null : 'Name cannot be empty';
+              return value.isNotEmpty ? null : tr('emptyFieldError');
             },
           ),
           TextFormField(
             controller: _dateController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               icon: Icon(Icons.calendar_today),
-              labelText: 'Date',
+              labelText: tr('date'),
             ),
             onTap: () async {
               FocusScope.of(context).requestFocus(new FocusNode());
@@ -74,7 +80,7 @@ class _FormBodyState extends State<FormBody> {
                   DateFormat.yMMMd(context.locale.languageCode).format(date);
             },
             validator: (String value) {
-              return value.isNotEmpty ? null : 'Date cannot be empty';
+              return value.isNotEmpty ? null : tr('emptyFieldError');
             },
           ),
           ElevatedButton(
@@ -84,7 +90,7 @@ class _FormBodyState extends State<FormBody> {
                 Navigator.of(context).pop();
               }
             },
-            child: Text('Submit'),
+            child: Text(tr('submit')),
           )
         ],
       ),

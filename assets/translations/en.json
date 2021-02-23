@@ -1,1 +1,6 @@
-{}
+{
+    "date": "Date",
+    "name": "Name",
+    "emptyFieldError": "Mandatory field",
+    "submit": "Submit"
+}
