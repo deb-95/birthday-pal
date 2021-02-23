@@ -12,10 +12,18 @@ class HomePage extends StatelessWidget {
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           onPressed: () {
-            Scaffold.of(context).showBottomSheet(
-              (context) => FractionallySizedBox(
-                heightFactor: 0.5,
-                child: BirthdayForm(),
+            showModalBottomSheet<void>(
+              context: context,
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(25.0))),
+              isScrollControlled: true,
+              builder: (context) => SafeArea(
+                child: Container(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: BirthdayForm(),
+                ),
               ),
             );
           },
