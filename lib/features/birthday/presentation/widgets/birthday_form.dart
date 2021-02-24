@@ -1,6 +1,10 @@
+import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_cubit.dart';
+import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_color_picker.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_text_form_field.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 const kFormSizedBox = SizedBox(
   width: 50,
@@ -35,19 +39,41 @@ class FormBody extends StatefulWidget {
 }
 
 class _FormBodyState extends State<FormBody> {
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
+  TextEditingController _dateController;
+  TextEditingController _nameController;
+
+  @override
+  void didChangeDependencies() {
+    final cubit = BlocProvider.of<BirthdayFormCubit>(context);
+    _dateController ??=
+        TextEditingController(text: formatDate(cubit.state.birthday));
+    _nameController ??= TextEditingController(text: cubit.state.name);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  String formatDate(DateTime date) {
+    return date != null
+        ? DateFormat.yMMMd(context.locale.languageCode).format(date)
+        : '';
+  }
 
   void handleDatePicker() async {
+    final cubit = BlocProvider.of<BirthdayFormCubit>(context);
     FocusScope.of(context).requestFocus(new FocusNode());
     DateTime date = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      initialDate: DateTime.tryParse(_dateController.text) ?? DateTime.now(),
+      initialDate: cubit.state.birthday ?? DateTime.now(),
       lastDate: DateTime.now(),
     );
-    _dateController.text =
-        DateFormat.yMMMd(context.locale.languageCode).format(date);
+    cubit.setBirthday(date);
   }
 
   String stringValidator(String value) {
@@ -55,48 +81,61 @@ class _FormBodyState extends State<FormBody> {
   }
 
   @override
-  void dispose() {
-    _dateController.dispose();
-    _nameController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Flex(
-        direction: widget.direction,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          BirthdayTextFormField(
-            controller: _nameController,
-            icon: Icon(Icons.person),
-            labelText: tr('name'),
-            validator: stringValidator,
-            onTap: () {},
-          ),
-          kFormSizedBox,
-          BirthdayTextFormField(
-            controller: _dateController,
-            icon: Icon(Icons.calendar_today),
-            labelText: tr('date'),
-            validator: stringValidator,
-            onTap: () => handleDatePicker(),
-          ),
-          kFormSizedBox,
-          ElevatedButton(
-            onPressed: () {
-              if (Form.of(context).validate()) {
-                // TODO: Save data
-                Navigator.of(context).pop();
-              }
-            },
-            child: Text(tr('submit')),
-          )
-        ],
+    return BlocListener<BirthdayFormCubit, BirthdayFormState>(
+      listener: (context, state) {
+        _dateController.text = formatDate(state.birthday);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Flex(
+          direction: widget.direction,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            BirthdayTextFormField(
+              controller: _nameController,
+              icon: Icon(Icons.person),
+              labelText: tr('name'),
+              validator: stringValidator,
+              onChange: (string) {
+                BlocProvider.of<BirthdayFormCubit>(context).setName(string);
+              },
+            ),
+            kFormSizedBox,
+            BirthdayTextFormField(
+              controller: _dateController,
+              icon: Icon(Icons.calendar_today),
+              labelText: tr('date'),
+              validator: stringValidator,
+              onTap: () => handleDatePicker(),
+            ),
+            kFormSizedBox,
+            BlocBuilder<BirthdayFormCubit, BirthdayFormState>(
+              builder: (context, state) {
+                return BirthdayColorPicker(selectedColor: state.color);
+              },
+            ),
+            kFormSizedBox,
+            ElevatedButton(
+              onPressed: () {
+                if (Form.of(context).validate()) {
+                  // TODO: Save data
+                  // final birthday = HiveBirthday(
+                  //   name: _nameController.text,
+                  //   birthday: DateTime.parse(_dateController.text),
+                  //   color: _selectedColor.value,
+                  // );
+                  // before popping check for errors in saving
+                  Navigator.of(context).pop();
+                  BlocProvider.of<BirthdayFormCubit>(context).reset();
+                }
+              },
+              child: Text(tr('submit')),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -6,6 +6,7 @@ class BirthdayTextFormField extends StatelessWidget {
   final String labelText;
   final String Function(String) validator;
   final void Function() onTap;
+  final void Function(String) onChange;
 
   const BirthdayTextFormField(
       {Key key,
@@ -13,7 +14,8 @@ class BirthdayTextFormField extends StatelessWidget {
       this.labelText,
       this.validator,
       this.icon,
-      this.onTap})
+      this.onTap,
+      this.onChange})
       : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class BirthdayTextFormField extends StatelessWidget {
         ),
         validator: validator,
         onTap: onTap,
+        onChanged: onChange,
       ),
     );
   }

@@ -1,8 +1,12 @@
-import 'package:birthdaypal/features/birthday/presentation/screens/homepage.dart';
+import 'package:birthdaypal/app/routes/router.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class BirthdayPal extends StatelessWidget {
+  final AppRouter appRouter;
+
+  const BirthdayPal({Key key, this.appRouter}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return EasyLocalization(
@@ -15,7 +19,7 @@ class BirthdayPal extends StatelessWidget {
           supportedLocales: localizationContext.supportedLocales,
           locale: localizationContext.locale,
           title: 'BirthdayPal',
-          home: HomePage(),
+          onGenerateRoute: appRouter.onGenerateRoute,
         ),
       ),
     );
