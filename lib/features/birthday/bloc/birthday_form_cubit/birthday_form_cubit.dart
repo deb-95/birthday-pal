@@ -21,33 +21,25 @@ class BirthdayFormCubit extends Cubit<BirthdayFormState> {
 
   void edit(BirthdayVM birthday) {
     emit(BirthdayFormEditing(
-        action: BirthdayFormAction.EDIT,
-        name: birthday.name,
-        birthday: birthday.birthday,
-        color: birthday.color));
+        action: BirthdayFormAction.EDIT, birthday: birthday));
   }
 
   void setName(String name) {
     emit(BirthdayFormEditing(
-        action: this.state.action,
-        name: name,
-        birthday: this.state.birthday,
-        color: this.state.color));
+      action: this.state.action,
+      birthday: this.state.birthday.copyWith(name: name),
+    ));
   }
 
   void setBirthday(DateTime birthday) {
     emit(BirthdayFormEditing(
         action: this.state.action,
-        name: this.state.name,
-        birthday: birthday,
-        color: this.state.color));
+        birthday: this.state.birthday.copyWith(birthday: birthday)));
   }
 
   void setColor(Color color) {
     emit(BirthdayFormEditing(
         action: this.state.action,
-        name: this.state.name,
-        birthday: this.state.birthday,
-        color: color));
+        birthday: this.state.birthday.copyWith(color: color)));
   }
 }

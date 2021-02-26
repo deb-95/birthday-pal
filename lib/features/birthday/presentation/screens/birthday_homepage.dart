@@ -56,11 +56,15 @@ class _BirthdayHomepageState extends State<BirthdayHomepage> {
         body: Center(
           child: BlocBuilder<BirthdayBloc, BirthdayState>(
             builder: (context, state) {
-              print(state);
               if (state is BirthdayReadLoaded) {
                 return Column(
-                  children:
-                      state.birthday.map((bd) => Text("${bd.name}")).toList(),
+                  children: state.birthday
+                      .map(
+                        (bd) => BirthdayCard(
+                          birthday: bd,
+                        ),
+                      )
+                      .toList(),
                 );
               } else if (state is BirthdayReadError) {
                 print(state.reason);
@@ -77,7 +81,10 @@ class _BirthdayHomepageState extends State<BirthdayHomepage> {
 class BirthdayCard extends StatelessWidget {
   const BirthdayCard({
     Key key,
+    this.birthday,
   }) : super(key: key);
+
+  final BirthdayVM birthday;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +107,7 @@ class BirthdayCard extends StatelessWidget {
                         maxWidth: 10,
                       ),
                       child: Container(
-                        color: Colors.red,
+                        color: birthday.color,
                       ),
                     ),
                   ),
@@ -109,7 +116,12 @@ class BirthdayCard extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [Text('Name'), Text('Date'), Text('Years')],
+                        children: [
+                          Text('${birthday.name}'),
+                          Text('${birthday.birthday.toString()}'),
+                          Text(
+                              '${DateTime.now().year - birthday.birthday.year}')
+                        ],
                       ),
                     ),
                   ),
@@ -120,16 +132,16 @@ class BirthdayCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            BlocProvider.of<BirthdayBloc>(context)
+                                .add(BirthdayDelete(birthday.id));
+                          },
                           child: Icon(Icons.delete),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            BlocProvider.of<BirthdayFormCubit>(context).edit(
-                                BirthdayVM(
-                                    name: "Deb",
-                                    birthday: DateTime.parse("1995-06-29"),
-                                    color: Colors.yellow));
+                            BlocProvider.of<BirthdayFormCubit>(context)
+                                .edit(birthday);
                             showModalBottomSheet<void>(
                               context: context,
                               shape: RoundedRectangleBorder(

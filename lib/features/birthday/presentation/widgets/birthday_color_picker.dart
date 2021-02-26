@@ -3,12 +3,12 @@ import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_colo
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const kColors = [
-  Colors.blue,
-  Colors.yellow,
-  Colors.green,
-  Colors.red,
-  Colors.orange
+const List<Color> kColors = [
+  Color(4280391411),
+  Color(4294961979),
+  Color(4283215696),
+  Color(4294198070),
+  Color(4294940672)
 ];
 
 class BirthdayColorPicker extends StatelessWidget {

@@ -1,7 +1,6 @@
 import 'package:birthdaypal/app/config/enums.dart';
 import 'package:birthdaypal/features/birthday/bloc/birthday_bloc/birthday_bloc.dart';
 import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_form_cubit.dart';
-import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_color_picker.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_text_form_field.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -49,8 +48,8 @@ class _FormBodyState extends State<FormBody> {
   void didChangeDependencies() {
     final cubit = BlocProvider.of<BirthdayFormCubit>(context);
     _dateController ??=
-        TextEditingController(text: formatDate(cubit.state.birthday));
-    _nameController ??= TextEditingController(text: cubit.state.name);
+        TextEditingController(text: formatDate(cubit.state.birthday.birthday));
+    _nameController ??= TextEditingController(text: cubit.state.birthday.name);
     super.didChangeDependencies();
   }
 
@@ -73,7 +72,7 @@ class _FormBodyState extends State<FormBody> {
     DateTime date = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      initialDate: cubit.state.birthday ?? DateTime.now(),
+      initialDate: cubit.state.birthday.birthday ?? DateTime.now(),
       lastDate: DateTime.now(),
     );
     cubit.setBirthday(date);
@@ -87,8 +86,9 @@ class _FormBodyState extends State<FormBody> {
   Widget build(BuildContext context) {
     return BlocListener<BirthdayFormCubit, BirthdayFormState>(
       listener: (context, state) {
-        _dateController.text = formatDate(state.birthday);
+        _dateController.text = formatDate(state.birthday.birthday);
       },
+      listenWhen: (prev, current) => current.birthday != null,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Flex(
@@ -116,8 +116,9 @@ class _FormBodyState extends State<FormBody> {
             ),
             kFormSizedBox,
             BlocBuilder<BirthdayFormCubit, BirthdayFormState>(
+              buildWhen: (previous, current) => current.birthday != null,
               builder: (context, state) {
-                return BirthdayColorPicker(selectedColor: state.color);
+                return BirthdayColorPicker(selectedColor: state.birthday.color);
               },
             ),
             kFormSizedBox,
@@ -125,23 +126,12 @@ class _FormBodyState extends State<FormBody> {
               onPressed: () {
                 final cubit = BlocProvider.of<BirthdayFormCubit>(context);
                 if (Form.of(context).validate()) {
-                  // TODO: Save data
-                  // final birthday = BirthdayVM(
-                  //   name: _nameController.text,
-                  //   birthday: DateTime.parse(_dateController.text),
-                  //   color: _selectedColor.value,
-                  // );
-                  // before popping check for errors in saving
-                  final birthday = BirthdayVM(
-                      name: cubit.state.name,
-                      birthday: cubit.state.birthday,
-                      color: cubit.state.color);
+                  // TODO: before popping check for errors in saving
+                  final birthday = cubit.state.birthday;
                   if (cubit.state.action == BirthdayFormAction.CREATE) {
-                    print("Creating");
                     RepositoryProvider.of<BirthdayBloc>(context)
                         .add(BirthdayCreate(birthday));
                   } else if (cubit.state.action == BirthdayFormAction.EDIT) {
-                    print("Editing");
                     RepositoryProvider.of<BirthdayBloc>(context)
                         .add(BirthdayEdit(birthday));
                   }

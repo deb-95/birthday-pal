@@ -14,4 +14,18 @@ class BirthdayVM {
     return BirthdayVM(
         id: id, name: bd.name, birthday: bd.birthday, color: Color(bd.color));
   }
+
+  BirthdayVM copyWith({
+    int id,
+    String name,
+    DateTime birthday,
+    Color color,
+  }) {
+    return BirthdayVM(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      birthday: birthday ?? this.birthday,
+      color: color ?? this.color,
+    );
+  }
 }

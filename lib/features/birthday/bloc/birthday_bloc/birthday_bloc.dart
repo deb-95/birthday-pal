@@ -25,7 +25,7 @@ class BirthdayBloc extends Bloc<BirthdayEvent, BirthdayState> {
       yield BirthdayReady();
     } else if (event is BirthdayFetch) {
       try {
-        final birthdays = getBirthdays();
+        final birthdays = _getBirthdays();
         yield BirthdayReadLoaded(birthdays);
       } catch (e) {
         yield BirthdayReadError(e.toString());
@@ -35,7 +35,7 @@ class BirthdayBloc extends Bloc<BirthdayEvent, BirthdayState> {
       final index =
           await _repository.create(HiveBirthday.fromVM(event.birthday));
       if (index > 0) {
-        yield BirthdayReadLoaded(getBirthdays());
+        yield BirthdayReadLoaded(_getBirthdays());
       } else {
         yield BirthdayCreatingError('Error adding ${event.birthday}');
       }
@@ -43,18 +43,18 @@ class BirthdayBloc extends Bloc<BirthdayEvent, BirthdayState> {
       final outcome = await _repository.edit(
           HiveBirthday.fromVM(event.birthday), event.birthday.id);
       // TODO: handle outcome
-      yield (BirthdayReadLoaded(getBirthdays()));
+      yield (BirthdayReadLoaded(_getBirthdays()));
     } else if (event is BirthdayDelete) {
       final outcome = await _repository.delete(event.id);
       // TODO: handle outcome
-      yield (BirthdayReadLoaded(getBirthdays()));
+      yield (BirthdayReadLoaded(_getBirthdays()));
     }
   }
 
-  List<BirthdayVM> getBirthdays() {
+  List<BirthdayVM> _getBirthdays() {
     final birthdays = _repository.getAll();
     return List<BirthdayVM>.generate(
-      birthdays.length - 1,
+      birthdays.length,
       (int i) => BirthdayVM.fromHive(i, birthdays[i]),
     );
   }

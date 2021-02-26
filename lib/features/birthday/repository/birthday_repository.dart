@@ -21,11 +21,12 @@ class BirthdayRepository extends Repository<HiveBirthday> {
 
   @override
   Future<void> delete(int id) async {
-    return await _box.delete(id);
+    return await _box.deleteAt(id);
   }
 
   @override
   Future<void> edit(HiveBirthday el, int id) async {
+    print('EDIT===============$id');
     return await _box.putAt(id, el);
   }
 
