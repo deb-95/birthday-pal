@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
 import 'package:hive/hive.dart';
 
 part 'hive_birthday.g.dart';
@@ -17,6 +16,12 @@ class HiveBirthday {
 
   HiveBirthday({this.name, this.birthday, this.color});
 
+  factory HiveBirthday.fromVM(BirthdayVM bd) {
+    return HiveBirthday(
+        name: bd.name, birthday: bd.birthday, color: bd.color.value);
+  }
+
   @override
-  String toString() => 'HiveBirthday(name: $name, birthday: $birthday, color: $color)';
+  String toString() =>
+      'HiveBirthday(name: $name, birthday: $birthday, color: $color)';
 }

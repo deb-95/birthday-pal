@@ -1,6 +1,7 @@
 import 'package:birthdaypal/app/routes/router.dart';
 import 'package:birthdaypal/features/birthday/bloc/birthday_bloc/birthday_bloc.dart';
 import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_form_cubit.dart';
+import 'package:birthdaypal/features/birthday/repository/birthday_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ class BirthdayPal extends StatelessWidget {
       child: Builder(
         builder: (localizationContext) => MultiBlocProvider(
           providers: [
-            BlocProvider<BirthdayBloc>(create: (_) => BirthdayBloc()),
+            BlocProvider<BirthdayBloc>(create: (_) => BirthdayBloc(BirthdayRepository())),
             BlocProvider<BirthdayFormCubit>(
               create: (_) => BirthdayFormCubit(),
             ),
