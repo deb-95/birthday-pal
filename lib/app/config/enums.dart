@@ -1,0 +1,1 @@
+enum BirthdayFormAction { CREATE, EDIT }

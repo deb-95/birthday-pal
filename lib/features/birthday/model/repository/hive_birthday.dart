@@ -13,7 +13,10 @@ class HiveBirthday {
   final DateTime birthday;
 
   @HiveField(2)
-  final Color color;
+  final int color;
 
   HiveBirthday({this.name, this.birthday, this.color});
+
+  @override
+  String toString() => 'HiveBirthday(name: $name, birthday: $birthday, color: $color)';
 }

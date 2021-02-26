@@ -1,4 +1,7 @@
-import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_cubit.dart';
+import 'package:birthdaypal/app/config/enums.dart';
+import 'package:birthdaypal/features/birthday/bloc/birthday_bloc/birthday_bloc.dart';
+import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_form_cubit.dart';
+import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_color_picker.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_text_form_field.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -120,16 +123,30 @@ class _FormBodyState extends State<FormBody> {
             kFormSizedBox,
             ElevatedButton(
               onPressed: () {
+                final cubit = BlocProvider.of<BirthdayFormCubit>(context);
                 if (Form.of(context).validate()) {
                   // TODO: Save data
-                  // final birthday = HiveBirthday(
+                  // final birthday = BirthdayVM(
                   //   name: _nameController.text,
                   //   birthday: DateTime.parse(_dateController.text),
                   //   color: _selectedColor.value,
                   // );
                   // before popping check for errors in saving
+                  final birthday = BirthdayVM(
+                      name: cubit.state.name,
+                      birthday: cubit.state.birthday,
+                      color: cubit.state.color);
+                  if (cubit.state.action == BirthdayFormAction.CREATE) {
+                    print("Creating");
+                    RepositoryProvider.of<BirthdayBloc>(context)
+                        .add(BirthdayCreate(birthday));
+                  } else if (cubit.state.action == BirthdayFormAction.EDIT) {
+                    print("Editing");
+                    RepositoryProvider.of<BirthdayBloc>(context)
+                        .add(BirthdayEdit(birthday));
+                  }
                   Navigator.of(context).pop();
-                  BlocProvider.of<BirthdayFormCubit>(context).reset();
+                  cubit.reset();
                 }
               },
               child: Text(tr('submit')),

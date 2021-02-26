@@ -19,7 +19,7 @@ class HiveBirthdayAdapter extends TypeAdapter<HiveBirthday> {
     return HiveBirthday(
       name: fields[0] as String,
       birthday: fields[1] as DateTime,
-      color: fields[2] as Color,
+      color: fields[2] as int,
     );
   }
 
