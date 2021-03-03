@@ -5,26 +5,26 @@ import 'package:birthdaypal/features/birthday/model/repository/hive_birthday.dar
 class BirthdayVM {
   final int id;
   final String name;
-  final DateTime birthday;
+  final DateTime date;
   final Color color;
 
-  BirthdayVM({this.id, this.name, this.birthday, this.color});
+  BirthdayVM({this.id, this.name, this.date, this.color});
 
   factory BirthdayVM.fromHive(int id, HiveBirthday bd) {
     return BirthdayVM(
-        id: id, name: bd.name, birthday: bd.birthday, color: Color(bd.color));
+        id: id, name: bd.name, date: bd.date, color: Color(bd.color));
   }
 
   BirthdayVM copyWith({
     int id,
     String name,
-    DateTime birthday,
+    DateTime date,
     Color color,
   }) {
     return BirthdayVM(
       id: id ?? this.id,
       name: name ?? this.name,
-      birthday: birthday ?? this.birthday,
+      date: date ?? this.date,
       color: color ?? this.color,
     );
   }

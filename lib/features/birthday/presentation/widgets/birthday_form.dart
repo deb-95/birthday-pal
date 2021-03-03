@@ -48,7 +48,7 @@ class _FormBodyState extends State<FormBody> {
   void didChangeDependencies() {
     final cubit = BlocProvider.of<BirthdayFormCubit>(context);
     _dateController ??=
-        TextEditingController(text: formatDate(cubit.state.birthday.birthday));
+        TextEditingController(text: formatDate(cubit.state.birthday.date));
     _nameController ??= TextEditingController(text: cubit.state.birthday.name);
     super.didChangeDependencies();
   }
@@ -72,7 +72,7 @@ class _FormBodyState extends State<FormBody> {
     DateTime date = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      initialDate: cubit.state.birthday.birthday ?? DateTime.now(),
+      initialDate: cubit.state.birthday.date ?? DateTime.now(),
       lastDate: DateTime.now(),
     );
     cubit.setBirthday(date);
@@ -86,7 +86,7 @@ class _FormBodyState extends State<FormBody> {
   Widget build(BuildContext context) {
     return BlocListener<BirthdayFormCubit, BirthdayFormState>(
       listener: (context, state) {
-        _dateController.text = formatDate(state.birthday.birthday);
+        _dateController.text = formatDate(state.birthday.date);
       },
       listenWhen: (prev, current) => current.birthday != null,
       child: Padding(

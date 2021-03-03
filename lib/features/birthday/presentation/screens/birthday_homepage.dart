@@ -1,7 +1,9 @@
 import 'package:birthdaypal/features/birthday/bloc/birthday_bloc/birthday_bloc.dart';
 import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_form_cubit.dart';
 import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
+import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_card.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_form.dart';
+import 'package:birthdaypal/features/birthday/presentation/widgets/birthdays_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -57,115 +59,17 @@ class _BirthdayHomepageState extends State<BirthdayHomepage> {
           child: BlocBuilder<BirthdayBloc, BirthdayState>(
             builder: (context, state) {
               if (state is BirthdayReadLoaded) {
-                return Column(
-                  children: state.birthday
-                      .map(
-                        (bd) => BirthdayCard(
-                          birthday: bd,
-                        ),
-                      )
-                      .toList(),
-                );
+                return BirthdaysList(birthdays: state.birthdays);
               } else if (state is BirthdayReadError) {
-                print(state.reason);
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.reason),
+                  ),
+                );
               }
               return Container();
             },
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class BirthdayCard extends StatelessWidget {
-  const BirthdayCard({
-    Key key,
-    this.birthday,
-  }) : super(key: key);
-
-  final BirthdayVM birthday;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 10,
-      clipBehavior: Clip.hardEdge,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height / 7,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Container(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: 10,
-                      ),
-                      child: Container(
-                        color: birthday.color,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('${birthday.name}'),
-                          Text('${birthday.birthday.toString()}'),
-                          Text(
-                              '${DateTime.now().year - birthday.birthday.year}')
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<BirthdayBloc>(context)
-                                .add(BirthdayDelete(birthday.id));
-                          },
-                          child: Icon(Icons.delete),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<BirthdayFormCubit>(context)
-                                .edit(birthday);
-                            showModalBottomSheet<void>(
-                              context: context,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(25.0),
-                                ),
-                              ),
-                              isScrollControlled: true,
-                              builder: (_) => BlocProvider.value(
-                                value:
-                                    BlocProvider.of<BirthdayFormCubit>(context),
-                                child: FormBottomSheet(),
-                              ),
-                            );
-                          },
-                          child: Icon(Icons.edit),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

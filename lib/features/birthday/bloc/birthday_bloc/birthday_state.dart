@@ -10,9 +10,9 @@ class BirthdayReady extends BirthdayState {}
 abstract class BirthdayRead extends BirthdayState {}
 
 class BirthdayReadLoaded extends BirthdayRead {
-  final List<BirthdayVM> birthday;
+  final List<BirthdayVM> birthdays;
 
-  BirthdayReadLoaded(this.birthday);
+  BirthdayReadLoaded(this.birthdays);
 }
 
 class BirthdayReadLoading extends BirthdayRead {}

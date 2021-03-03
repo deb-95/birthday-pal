@@ -9,19 +9,19 @@ class HiveBirthday {
   final String name;
 
   @HiveField(1)
-  final DateTime birthday;
+  final DateTime date;
 
   @HiveField(2)
   final int color;
 
-  HiveBirthday({this.name, this.birthday, this.color});
+  HiveBirthday({this.name, this.date, this.color});
 
   factory HiveBirthday.fromVM(BirthdayVM bd) {
     return HiveBirthday(
-        name: bd.name, birthday: bd.birthday, color: bd.color.value);
+        name: bd.name, date: bd.date, color: bd.color.value);
   }
 
   @override
   String toString() =>
-      'HiveBirthday(name: $name, birthday: $birthday, color: $color)';
+      'HiveBirthday(name: $name, birthday: $date, color: $color)';
 }

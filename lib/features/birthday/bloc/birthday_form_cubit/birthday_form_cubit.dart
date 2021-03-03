@@ -31,10 +31,10 @@ class BirthdayFormCubit extends Cubit<BirthdayFormState> {
     ));
   }
 
-  void setBirthday(DateTime birthday) {
+  void setBirthday(DateTime date) {
     emit(BirthdayFormEditing(
         action: this.state.action,
-        birthday: this.state.birthday.copyWith(birthday: birthday)));
+        birthday: this.state.birthday.copyWith(date: date)));
   }
 
   void setColor(Color color) {

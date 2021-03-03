@@ -16,7 +16,7 @@ class BirthdayFormInitial extends BirthdayFormState {}
 class BirthdayFormCreating extends BirthdayFormState {
   final BirthdayFormAction action = BirthdayFormAction.CREATE;
   final BirthdayVM birthday =
-      BirthdayVM(name: "", birthday: null, color: Color(4280391411));
+      BirthdayVM(name: "", date: null, color: Color(4280391411));
 }
 
 class BirthdayFormEditing extends BirthdayFormState {
