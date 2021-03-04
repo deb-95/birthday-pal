@@ -48,8 +48,8 @@ class _FormBodyState extends State<FormBody> {
   void didChangeDependencies() {
     final cubit = BlocProvider.of<BirthdayFormCubit>(context);
     _dateController =
-        TextEditingController(text: formatDate(cubit.state.birthday!.date!));
-    _nameController = TextEditingController(text: cubit.state.birthday!.name);
+        TextEditingController(text: formatDate(cubit.state.birthday.date));
+    _nameController = TextEditingController(text: cubit.state.birthday.name);
     super.didChangeDependencies();
   }
 
@@ -60,7 +60,7 @@ class _FormBodyState extends State<FormBody> {
     super.dispose();
   }
 
-  String formatDate(DateTime date) {
+  String formatDate(DateTime? date) {
     return date != null
         ? DateFormat.yMMMd(context.locale.languageCode).format(date)
         : '';
@@ -72,7 +72,7 @@ class _FormBodyState extends State<FormBody> {
     DateTime? date = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      initialDate: cubit.state.birthday!.date ?? DateTime.now(),
+      initialDate: cubit.state.birthday.date ?? DateTime.now(),
       lastDate: DateTime.now(),
     );
     if (date != null) {
@@ -88,9 +88,9 @@ class _FormBodyState extends State<FormBody> {
   Widget build(BuildContext context) {
     return BlocListener<BirthdayFormCubit, BirthdayFormState>(
       listener: (context, state) {
-        _dateController.text = formatDate(state.birthday!.date!);
+        _dateController.text = formatDate(state.birthday.date);
       },
-      listenWhen: (prev, current) => current.birthday!.date != null,
+      listenWhen: (prev, current) => current.birthday.date != null,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Flex(
@@ -119,7 +119,7 @@ class _FormBodyState extends State<FormBody> {
             kFormSizedBox,
             BlocBuilder<BirthdayFormCubit, BirthdayFormState>(
               builder: (context, state) {
-                return BirthdayColorPicker(selectedColor: state.birthday!.color);
+                return BirthdayColorPicker(selectedColor: state.birthday.color);
               },
             ),
             kFormSizedBox,
@@ -131,10 +131,10 @@ class _FormBodyState extends State<FormBody> {
                   final birthday = cubit.state.birthday;
                   if (cubit.state.action == BirthdayFormAction.CREATE) {
                     RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayCreate(birthday!));
+                        .add(BirthdayCreate(birthday.toBirthdayVM()));
                   } else if (cubit.state.action == BirthdayFormAction.EDIT) {
                     RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayEdit(birthday!));
+                        .add(BirthdayEdit(birthday.toBirthdayVM()));
                   }
                   Navigator.of(context).pop();
                   cubit.reset();

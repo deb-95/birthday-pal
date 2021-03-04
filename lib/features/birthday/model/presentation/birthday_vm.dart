@@ -5,13 +5,13 @@ import 'package:birthdaypal/features/birthday/model/repository/hive_birthday.dar
 class BirthdayVM {
   final int? id;
   final String name;
-  final DateTime? date;
+  final DateTime date;
   final Color color;
 
   BirthdayVM({
     this.id,
     required this.name,
-    this.date,
+    required this.date,
     required this.color,
   });
 
