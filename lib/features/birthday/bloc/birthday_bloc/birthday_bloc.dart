@@ -41,11 +41,11 @@ class BirthdayBloc extends Bloc<BirthdayEvent, BirthdayState> {
       }
     } else if (event is BirthdayEdit) {
       final outcome = await _repository.edit(
-          HiveBirthday.fromVM(event.birthday), event.birthday.id);
+          HiveBirthday.fromVM(event.birthday), event.birthday.id!);
       // TODO: handle outcome
       yield (BirthdayReadLoaded(_getBirthdays()));
     } else if (event is BirthdayDelete) {
-      final outcome = await _repository.delete(event.id);
+      final outcome = await _repository.delete(event.id!);
       // TODO: handle outcome
       yield (BirthdayReadLoaded(_getBirthdays()));
     }

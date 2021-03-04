@@ -3,7 +3,7 @@ import 'package:birthdaypal/features/birthday/repository/repository.dart';
 import 'package:hive/hive.dart';
 
 class BirthdayRepository extends Repository<HiveBirthday> {
-  Box<HiveBirthday> _box;
+  late Box<HiveBirthday> _box;
 
   Future<void> init() async {
     _box = await Hive.openBox<HiveBirthday>('birthdays');
@@ -26,7 +26,6 @@ class BirthdayRepository extends Repository<HiveBirthday> {
 
   @override
   Future<void> edit(HiveBirthday el, int id) async {
-    print('EDIT===============$id');
     return await _box.putAt(id, el);
   }
 

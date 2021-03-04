@@ -18,9 +18,12 @@ class BirthdayColorFormField extends StatelessWidget {
   final Color color;
   final void Function() onTap;
 
-  const BirthdayColorFormField(
-      {Key key, this.isSelected, this.color, this.onTap})
-      : super(key: key);
+  const BirthdayColorFormField({
+    Key? key,
+    required this.isSelected,
+    required this.color,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

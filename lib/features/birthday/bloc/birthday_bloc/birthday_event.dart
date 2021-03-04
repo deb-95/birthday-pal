@@ -16,7 +16,7 @@ class BirthdayEdit extends BirthdayEvent {
 
 // Delete -> DeleteState
 class BirthdayDelete extends BirthdayEvent {
-  final int id;
+  final int? id;
 
   BirthdayDelete(this.id);
 }

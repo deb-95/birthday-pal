@@ -4,16 +4,16 @@ class BirthdayTextFormField extends StatelessWidget {
   final Icon icon;
   final TextEditingController controller;
   final String labelText;
-  final String Function(String) validator;
-  final void Function() onTap;
-  final void Function(String) onChange;
+  final String? Function(String?)? validator;
+  final void Function()? onTap;
+  final void Function(String)? onChange;
 
   const BirthdayTextFormField(
-      {Key key,
-      this.controller,
-      this.labelText,
-      this.validator,
-      this.icon,
+      {Key? key,
+      required this.controller,
+      required this.labelText,
+      required this.validator,
+      required this.icon,
       this.onTap,
       this.onChange})
       : super(key: key);

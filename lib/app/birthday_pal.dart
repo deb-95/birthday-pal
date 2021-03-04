@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BirthdayPal extends StatelessWidget {
   final AppRouter appRouter;
 
-  const BirthdayPal({Key key, this.appRouter}) : super(key: key);
+  const BirthdayPal({Key? key, required this.appRouter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,8 @@ class BirthdayPal extends StatelessWidget {
       child: Builder(
         builder: (localizationContext) => MultiBlocProvider(
           providers: [
-            BlocProvider<BirthdayBloc>(create: (_) => BirthdayBloc(BirthdayRepository())),
+            BlocProvider<BirthdayBloc>(
+                create: (_) => BirthdayBloc(BirthdayRepository())),
             BlocProvider<BirthdayFormCubit>(
               create: (_) => BirthdayFormCubit(),
             ),

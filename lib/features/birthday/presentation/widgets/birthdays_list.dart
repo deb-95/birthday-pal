@@ -5,8 +5,8 @@ import 'birthday_card.dart';
 
 class BirthdaysList extends StatelessWidget {
   const BirthdaysList({
-    Key key,
-    this.birthdays,
+    Key? key,
+    required this.birthdays,
   }) : super(key: key);
 
   final List<BirthdayVM> birthdays;

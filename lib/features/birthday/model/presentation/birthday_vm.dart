@@ -3,12 +3,17 @@ import 'dart:ui';
 import 'package:birthdaypal/features/birthday/model/repository/hive_birthday.dart';
 
 class BirthdayVM {
-  final int id;
+  final int? id;
   final String name;
-  final DateTime date;
+  final DateTime? date;
   final Color color;
 
-  BirthdayVM({this.id, this.name, this.date, this.color});
+  BirthdayVM({
+    this.id,
+    required this.name,
+    this.date,
+    required this.color,
+  });
 
   factory BirthdayVM.fromHive(int id, HiveBirthday bd) {
     return BirthdayVM(
@@ -16,10 +21,10 @@ class BirthdayVM {
   }
 
   BirthdayVM copyWith({
-    int id,
-    String name,
-    DateTime date,
-    Color color,
+    int? id,
+    String? name,
+    DateTime? date,
+    Color? color,
   }) {
     return BirthdayVM(
       id: id ?? this.id,

@@ -13,8 +13,8 @@ const List<Color> kColors = [
 
 class BirthdayColorPicker extends StatelessWidget {
   const BirthdayColorPicker({
-    Key key,
-    @required Color selectedColor,
+    Key? key,
+    required Color selectedColor,
   })  : _selectedColor = selectedColor,
         super(key: key);
 

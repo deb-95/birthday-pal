@@ -5,13 +5,12 @@ class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case BirthdayHomepage.route:
-        return MaterialPageRoute(
-            // builder: (context) => BlocProvider<BirthdayFormCubit>(
-            //   create: (_) => BirthdayFormCubit(),
-            //   child: BirthdayHomepage(),
-            // ),
-            builder: (context) => BirthdayHomepage());
+        return MaterialPageRoute(builder: (context) => BirthdayHomepage());
     }
-    return null;
+    return MaterialPageRoute(
+      builder: (context) => Container(
+        child: Text('Not Found'),
+      ),
+    );
   }
 }

@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BirthdayCard extends StatelessWidget {
   const BirthdayCard({
-    Key key,
-    this.birthday,
+    Key? key,
+    required this.birthday,
   }) : super(key: key);
 
   final BirthdayVM birthday;
@@ -42,7 +42,7 @@ class BirthdayCard extends StatelessWidget {
                       children: [
                         Text('${birthday.name}'),
                         Text('${birthday.date.toString()}'),
-                        Text('${DateTime.now().year - birthday.date.year}')
+                        Text('${DateTime.now().year - birthday.date!.year}')
                       ],
                     ),
                   ),

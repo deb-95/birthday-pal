@@ -34,22 +34,22 @@ class _BirthdayFormState extends State<BirthdayForm> {
 class FormBody extends StatefulWidget {
   final Axis direction;
 
-  FormBody({Key key, @required this.direction}) : super(key: key);
+  FormBody({Key? key, required this.direction}) : super(key: key);
 
   @override
   _FormBodyState createState() => _FormBodyState();
 }
 
 class _FormBodyState extends State<FormBody> {
-  TextEditingController _dateController;
-  TextEditingController _nameController;
+  late TextEditingController _dateController;
+  late TextEditingController _nameController;
 
   @override
   void didChangeDependencies() {
     final cubit = BlocProvider.of<BirthdayFormCubit>(context);
-    _dateController ??=
-        TextEditingController(text: formatDate(cubit.state.birthday.date));
-    _nameController ??= TextEditingController(text: cubit.state.birthday.name);
+    _dateController =
+        TextEditingController(text: formatDate(cubit.state.birthday!.date!));
+    _nameController = TextEditingController(text: cubit.state.birthday!.name);
     super.didChangeDependencies();
   }
 
@@ -69,26 +69,28 @@ class _FormBodyState extends State<FormBody> {
   void handleDatePicker() async {
     final cubit = BlocProvider.of<BirthdayFormCubit>(context);
     FocusScope.of(context).requestFocus(new FocusNode());
-    DateTime date = await showDatePicker(
+    DateTime? date = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      initialDate: cubit.state.birthday.date ?? DateTime.now(),
+      initialDate: cubit.state.birthday!.date ?? DateTime.now(),
       lastDate: DateTime.now(),
     );
-    cubit.setBirthday(date);
+    if (date != null) {
+      cubit.setBirthday(date);
+    }
   }
 
-  String stringValidator(String value) {
-    return value.isNotEmpty ? null : tr('emptyFieldError');
+  String? stringValidator(String? value) {
+    return value!.isNotEmpty ? null : tr('emptyFieldError');
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<BirthdayFormCubit, BirthdayFormState>(
       listener: (context, state) {
-        _dateController.text = formatDate(state.birthday.date);
+        _dateController.text = formatDate(state.birthday!.date!);
       },
-      listenWhen: (prev, current) => current.birthday != null,
+      listenWhen: (prev, current) => current.birthday!.date != null,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Flex(
@@ -116,24 +118,23 @@ class _FormBodyState extends State<FormBody> {
             ),
             kFormSizedBox,
             BlocBuilder<BirthdayFormCubit, BirthdayFormState>(
-              buildWhen: (previous, current) => current.birthday != null,
               builder: (context, state) {
-                return BirthdayColorPicker(selectedColor: state.birthday.color);
+                return BirthdayColorPicker(selectedColor: state.birthday!.color);
               },
             ),
             kFormSizedBox,
             ElevatedButton(
               onPressed: () {
                 final cubit = BlocProvider.of<BirthdayFormCubit>(context);
-                if (Form.of(context).validate()) {
+                if (Form.of(context)!.validate()) {
                   // TODO: before popping check for errors in saving
                   final birthday = cubit.state.birthday;
                   if (cubit.state.action == BirthdayFormAction.CREATE) {
                     RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayCreate(birthday));
+                        .add(BirthdayCreate(birthday!));
                   } else if (cubit.state.action == BirthdayFormAction.EDIT) {
                     RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayEdit(birthday));
+                        .add(BirthdayEdit(birthday!));
                   }
                   Navigator.of(context).pop();
                   cubit.reset();

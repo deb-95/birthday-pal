@@ -5,20 +5,15 @@ class MyBlocObserver extends BlocObserver {
   final logger = Logger();
 
   @override
-  void onCreate(Cubit cubit) {
-    logger.i('Created $cubit');
-    super.onCreate(cubit);
+  void onCreate(Bloc bloc) {
+    logger.i('Created $bloc');
+    super.onCreate(bloc);
   }
 
   @override
-  void onEvent(Bloc bloc, Object event) {
+  void onEvent(Bloc bloc, Object? event) {
     logger.i('Event $event from $bloc');
     super.onEvent(bloc, event);
-  }
-
-  @override
-  void onChange(Cubit cubit, Change change) {
-    super.onChange(cubit, change);
   }
 
   @override
@@ -27,12 +22,13 @@ class MyBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
-    super.onError(cubit, error, stackTrace);
+  void onError(Bloc bloc, Object error, StackTrace stackTrace) {
+    logger.e(bloc, stackTrace);
+    super.onError(bloc, error, stackTrace);
   }
 
   @override
-  void onClose(Cubit cubit) {
-    super.onClose(cubit);
+  void onClose(Bloc bloc) {
+    super.onClose(bloc);
   }
 }

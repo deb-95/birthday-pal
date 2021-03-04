@@ -1,7 +1,5 @@
 import 'package:birthdaypal/features/birthday/bloc/birthday_bloc/birthday_bloc.dart';
 import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_form_cubit.dart';
-import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
-import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_card.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_form.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthdays_list.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,7 @@ class BirthdayHomepage extends StatefulWidget {
   static const route = '/';
 
   const BirthdayHomepage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -61,7 +59,7 @@ class _BirthdayHomepageState extends State<BirthdayHomepage> {
               if (state is BirthdayReadLoaded) {
                 return BirthdaysList(birthdays: state.birthdays);
               } else if (state is BirthdayReadError) {
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.reason),
                   ),
@@ -78,7 +76,7 @@ class _BirthdayHomepageState extends State<BirthdayHomepage> {
 
 class FormBottomSheet extends StatelessWidget {
   const FormBottomSheet({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
