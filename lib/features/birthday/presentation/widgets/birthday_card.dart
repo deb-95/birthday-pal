@@ -56,7 +56,7 @@ class BirthdayCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {
                           BlocProvider.of<BirthdayBloc>(context)
-                              .add(BirthdayDelete(birthday.id));
+                              .add(BirthdayDelete(birthday.id!));
                         },
                         child: Icon(Icons.delete),
                       ),
