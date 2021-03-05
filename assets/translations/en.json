@@ -2,5 +2,6 @@
     "date": "Date",
     "name": "Name",
     "emptyFieldError": "Mandatory field",
-    "submit": "Submit"
+    "submit": "Submit",
+    "years": "years old"
 }

@@ -1,7 +1,7 @@
 import 'package:birthdaypal/features/birthday/bloc/birthday_bloc/birthday_bloc.dart';
 import 'package:birthdaypal/features/birthday/bloc/birthday_form_cubit/birthday_form_cubit.dart';
-import 'package:birthdaypal/features/birthday/presentation/widgets/birthday_form.dart';
 import 'package:birthdaypal/features/birthday/presentation/widgets/birthdays_list.dart';
+import 'package:birthdaypal/features/birthday/presentation/widgets/form_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,8 +35,7 @@ class _BirthdayHomepageState extends State<BirthdayHomepage> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            final formCubit = BlocProvider.of<BirthdayFormCubit>(context);
-            formCubit.create();
+            BlocProvider.of<BirthdayFormCubit>(context).create();
             showModalBottomSheet<void>(
               context: context,
               shape: RoundedRectangleBorder(
@@ -69,23 +68,6 @@ class _BirthdayHomepageState extends State<BirthdayHomepage> {
             },
           ),
         ),
-      ),
-    );
-  }
-}
-
-class FormBottomSheet extends StatelessWidget {
-  const FormBottomSheet({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: BirthdayForm(),
       ),
     );
   }

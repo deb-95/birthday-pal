@@ -8,6 +8,10 @@ class BirthdayVM {
   final DateTime date;
   final Color color;
 
+  int get years {
+    return DateTime.now().year - date.year;
+  }
+
   BirthdayVM({
     this.id,
     required this.name,
@@ -32,5 +36,10 @@ class BirthdayVM {
       date: date ?? this.date,
       color: color ?? this.color,
     );
+  }
+
+  @override
+  String toString() {
+    return 'BirthdayVM(id: $id, name: $name, date: $date, color: $color)';
   }
 }

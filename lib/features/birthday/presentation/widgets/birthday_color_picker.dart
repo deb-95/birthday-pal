@@ -15,7 +15,7 @@ class BirthdayColorPicker extends StatelessWidget {
   const BirthdayColorPicker({
     Key? key,
     required Color selectedColor,
-  })  : _selectedColor = selectedColor,
+  })   : _selectedColor = selectedColor,
         super(key: key);
 
   final Color _selectedColor;

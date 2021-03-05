@@ -46,10 +46,11 @@ class _FormBodyState extends State<FormBody> {
 
   @override
   void didChangeDependencies() {
-    final cubit = BlocProvider.of<BirthdayFormCubit>(context);
+    final cubitBirthday =
+        BlocProvider.of<BirthdayFormCubit>(context).state.birthday;
     _dateController =
-        TextEditingController(text: formatDate(cubit.state.birthday.date));
-    _nameController = TextEditingController(text: cubit.state.birthday.name);
+        TextEditingController(text: formatDate(cubitBirthday.date));
+    _nameController = TextEditingController(text: cubitBirthday.name);
     super.didChangeDependencies();
   }
 
@@ -67,6 +68,7 @@ class _FormBodyState extends State<FormBody> {
   }
 
   void handleDatePicker() async {
+    // ignore: close_sinks
     final cubit = BlocProvider.of<BirthdayFormCubit>(context);
     FocusScope.of(context).requestFocus(new FocusNode());
     DateTime? date = await showDatePicker(
@@ -123,28 +125,39 @@ class _FormBodyState extends State<FormBody> {
               },
             ),
             kFormSizedBox,
-            ElevatedButton(
-              onPressed: () {
-                final cubit = BlocProvider.of<BirthdayFormCubit>(context);
-                if (Form.of(context)!.validate()) {
-                  // TODO: before popping check for errors in saving
-                  final birthday = cubit.state.birthday;
-                  if (cubit.state.action == BirthdayFormAction.CREATE) {
-                    RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayCreate(birthday.toBirthdayVM()));
-                  } else if (cubit.state.action == BirthdayFormAction.EDIT) {
-                    RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayEdit(birthday.toBirthdayVM()));
-                  }
-                  Navigator.of(context).pop();
-                  cubit.reset();
-                }
-              },
-              child: Text(tr('submit')),
-            )
+            ConfirmButton()
           ],
         ),
       ),
+    );
+  }
+}
+
+class ConfirmButton extends StatelessWidget {
+  const ConfirmButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // ignore: close_sinks
+        final cubit = BlocProvider.of<BirthdayFormCubit>(context);
+        if (Form.of(context)!.validate()) {
+          final birthday = cubit.state.birthday;
+          if (cubit.state.action == BirthdayFormAction.CREATE) {
+            RepositoryProvider.of<BirthdayBloc>(context)
+                .add(BirthdayCreate(birthday.toBirthdayVM()));
+          } else if (cubit.state.action == BirthdayFormAction.EDIT) {
+            RepositoryProvider.of<BirthdayBloc>(context)
+                .add(BirthdayEdit(birthday.toBirthdayVM()));
+          }
+          Navigator.of(context).pop();
+          cubit.reset();
+        }
+      },
+      child: Text(tr('submit')),
     );
   }
 }

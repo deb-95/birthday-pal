@@ -30,7 +30,7 @@ class BirthdayFormCreating extends BirthdayFormState {
           birthday: BirthdayFormDataVM(
             name: "",
             date: null,
-            color: Color(4280391411),
+            color: const Color(4280391411),
           ),
         );
 }

@@ -8,15 +8,15 @@ class BirthdayTextFormField extends StatelessWidget {
   final void Function()? onTap;
   final void Function(String)? onChange;
 
-  const BirthdayTextFormField(
-      {Key? key,
-      required this.controller,
-      required this.labelText,
-      required this.validator,
-      required this.icon,
-      this.onTap,
-      this.onChange})
-      : super(key: key);
+  const BirthdayTextFormField({
+    Key? key,
+    required this.controller,
+    required this.labelText,
+    required this.validator,
+    required this.icon,
+    this.onTap,
+    this.onChange,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
