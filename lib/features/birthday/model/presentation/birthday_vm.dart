@@ -5,13 +5,17 @@ import 'package:birthdaypal/features/birthday/model/repository/hive_birthday.dar
 class BirthdayVM {
   final int? id;
   final String name;
-  final DateTime? date;
+  final DateTime date;
   final Color color;
+
+  int get years {
+    return DateTime.now().year - date.year;
+  }
 
   BirthdayVM({
     this.id,
     required this.name,
-    this.date,
+    required this.date,
     required this.color,
   });
 
@@ -32,5 +36,10 @@ class BirthdayVM {
       date: date ?? this.date,
       color: color ?? this.color,
     );
+  }
+
+  @override
+  String toString() {
+    return 'BirthdayVM(id: $id, name: $name, date: $date, color: $color)';
   }
 }

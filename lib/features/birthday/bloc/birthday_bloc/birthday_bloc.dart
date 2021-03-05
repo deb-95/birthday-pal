@@ -45,7 +45,7 @@ class BirthdayBloc extends Bloc<BirthdayEvent, BirthdayState> {
       // TODO: handle outcome
       yield (BirthdayReadLoaded(_getBirthdays()));
     } else if (event is BirthdayDelete) {
-      final outcome = await _repository.delete(event.id!);
+      final outcome = await _repository.delete(event.id);
       // TODO: handle outcome
       yield (BirthdayReadLoaded(_getBirthdays()));
     }

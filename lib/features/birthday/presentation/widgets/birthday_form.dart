@@ -46,10 +46,11 @@ class _FormBodyState extends State<FormBody> {
 
   @override
   void didChangeDependencies() {
-    final cubit = BlocProvider.of<BirthdayFormCubit>(context);
+    final cubitBirthday =
+        BlocProvider.of<BirthdayFormCubit>(context).state.birthday;
     _dateController =
-        TextEditingController(text: formatDate(cubit.state.birthday!.date!));
-    _nameController = TextEditingController(text: cubit.state.birthday!.name);
+        TextEditingController(text: formatDate(cubitBirthday.date));
+    _nameController = TextEditingController(text: cubitBirthday.name);
     super.didChangeDependencies();
   }
 
@@ -60,19 +61,20 @@ class _FormBodyState extends State<FormBody> {
     super.dispose();
   }
 
-  String formatDate(DateTime date) {
+  String formatDate(DateTime? date) {
     return date != null
         ? DateFormat.yMMMd(context.locale.languageCode).format(date)
         : '';
   }
 
   void handleDatePicker() async {
+    // ignore: close_sinks
     final cubit = BlocProvider.of<BirthdayFormCubit>(context);
     FocusScope.of(context).requestFocus(new FocusNode());
     DateTime? date = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      initialDate: cubit.state.birthday!.date ?? DateTime.now(),
+      initialDate: cubit.state.birthday.date ?? DateTime.now(),
       lastDate: DateTime.now(),
     );
     if (date != null) {
@@ -88,9 +90,9 @@ class _FormBodyState extends State<FormBody> {
   Widget build(BuildContext context) {
     return BlocListener<BirthdayFormCubit, BirthdayFormState>(
       listener: (context, state) {
-        _dateController.text = formatDate(state.birthday!.date!);
+        _dateController.text = formatDate(state.birthday.date);
       },
-      listenWhen: (prev, current) => current.birthday!.date != null,
+      listenWhen: (prev, current) => current.birthday.date != null,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Flex(
@@ -119,32 +121,43 @@ class _FormBodyState extends State<FormBody> {
             kFormSizedBox,
             BlocBuilder<BirthdayFormCubit, BirthdayFormState>(
               builder: (context, state) {
-                return BirthdayColorPicker(selectedColor: state.birthday!.color);
+                return BirthdayColorPicker(selectedColor: state.birthday.color);
               },
             ),
             kFormSizedBox,
-            ElevatedButton(
-              onPressed: () {
-                final cubit = BlocProvider.of<BirthdayFormCubit>(context);
-                if (Form.of(context)!.validate()) {
-                  // TODO: before popping check for errors in saving
-                  final birthday = cubit.state.birthday;
-                  if (cubit.state.action == BirthdayFormAction.CREATE) {
-                    RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayCreate(birthday!));
-                  } else if (cubit.state.action == BirthdayFormAction.EDIT) {
-                    RepositoryProvider.of<BirthdayBloc>(context)
-                        .add(BirthdayEdit(birthday!));
-                  }
-                  Navigator.of(context).pop();
-                  cubit.reset();
-                }
-              },
-              child: Text(tr('submit')),
-            )
+            ConfirmButton()
           ],
         ),
       ),
+    );
+  }
+}
+
+class ConfirmButton extends StatelessWidget {
+  const ConfirmButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // ignore: close_sinks
+        final cubit = BlocProvider.of<BirthdayFormCubit>(context);
+        if (Form.of(context)!.validate()) {
+          final birthday = cubit.state.birthday;
+          if (cubit.state.action == BirthdayFormAction.CREATE) {
+            RepositoryProvider.of<BirthdayBloc>(context)
+                .add(BirthdayCreate(birthday.toBirthdayVM()));
+          } else if (cubit.state.action == BirthdayFormAction.EDIT) {
+            RepositoryProvider.of<BirthdayBloc>(context)
+                .add(BirthdayEdit(birthday.toBirthdayVM()));
+          }
+          Navigator.of(context).pop();
+          cubit.reset();
+        }
+      },
+      child: Text(tr('submit')),
     );
   }
 }

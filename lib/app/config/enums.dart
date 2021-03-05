@@ -1,1 +1,1 @@
-enum BirthdayFormAction { CREATE, EDIT }
+enum BirthdayFormAction { INIT, CREATE, EDIT }

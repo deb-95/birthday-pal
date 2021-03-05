@@ -2,5 +2,6 @@
     "date": "Data",
     "name": "Nome",
     "emptyFieldError": "Campo obbligatorio",
-    "submit": "Conferma"
+    "submit": "Conferma",
+    "years": "anni"
 }

@@ -14,11 +14,10 @@ class HiveBirthday {
   @HiveField(2)
   final int color;
 
-  HiveBirthday(
-      {required this.name, required this.date, required this.color});
+  HiveBirthday({required this.name, required this.date, required this.color});
 
   factory HiveBirthday.fromVM(BirthdayVM bd) {
-    return HiveBirthday(name: bd.name, date: bd.date!, color: bd.color.value);
+    return HiveBirthday(name: bd.name, date: bd.date, color: bd.color.value);
   }
 
   @override
