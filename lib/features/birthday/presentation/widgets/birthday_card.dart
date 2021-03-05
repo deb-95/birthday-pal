@@ -42,7 +42,7 @@ class BirthdayCard extends StatelessWidget {
                       children: [
                         Text('${birthday.name}'),
                         Text('${birthday.date.toString()}'),
-                        Text('${DateTime.now().year - birthday.date!.year}')
+                        Text('${DateTime.now().year - birthday.date.year}')
                       ],
                     ),
                   ),
