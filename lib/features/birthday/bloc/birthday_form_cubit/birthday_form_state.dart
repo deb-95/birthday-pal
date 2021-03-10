@@ -2,11 +2,9 @@ part of 'birthday_form_cubit.dart';
 
 @immutable
 abstract class BirthdayFormState {
-  final BirthdayFormAction action;
   final BirthdayFormDataVM birthday;
 
   BirthdayFormState({
-    required this.action,
     required this.birthday,
   });
 }
@@ -14,7 +12,6 @@ abstract class BirthdayFormState {
 class BirthdayFormInitial extends BirthdayFormState {
   BirthdayFormInitial()
       : super(
-          action: BirthdayFormAction.INIT,
           birthday: BirthdayFormDataVM(
             name: "",
             date: null,
@@ -26,7 +23,6 @@ class BirthdayFormInitial extends BirthdayFormState {
 class BirthdayFormCreating extends BirthdayFormState {
   BirthdayFormCreating()
       : super(
-          action: BirthdayFormAction.CREATE,
           birthday: BirthdayFormDataVM(
             name: "",
             date: null,
@@ -36,11 +32,9 @@ class BirthdayFormCreating extends BirthdayFormState {
 }
 
 class BirthdayFormEditing extends BirthdayFormState {
-  final BirthdayFormAction action;
   final BirthdayFormDataVM birthday;
 
   BirthdayFormEditing({
-    required this.action,
     required this.birthday,
-  }) : super(action: action, birthday: birthday);
+  }) : super(birthday: birthday);
 }

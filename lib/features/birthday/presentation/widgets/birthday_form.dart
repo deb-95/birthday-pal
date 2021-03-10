@@ -146,10 +146,10 @@ class ConfirmButton extends StatelessWidget {
         final cubit = BlocProvider.of<BirthdayFormCubit>(context);
         if (Form.of(context)!.validate()) {
           final birthday = cubit.state.birthday;
-          if (cubit.state.action == BirthdayFormAction.CREATE) {
+          if (birthday.action == BirthdayFormAction.CREATE) {
             RepositoryProvider.of<BirthdayBloc>(context)
                 .add(BirthdayCreate(birthday.toBirthdayVM()));
-          } else if (cubit.state.action == BirthdayFormAction.EDIT) {
+          } else if (birthday.action == BirthdayFormAction.EDIT) {
             RepositoryProvider.of<BirthdayBloc>(context)
                 .add(BirthdayEdit(birthday.toBirthdayVM()));
           }

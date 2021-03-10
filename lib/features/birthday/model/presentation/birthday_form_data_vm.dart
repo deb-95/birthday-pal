@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:birthdaypal/app/config/enums.dart';
 import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
 
 class BirthdayFormDataVM {
@@ -31,6 +32,10 @@ class BirthdayFormDataVM {
       name: this.name,
       id: this.id,
     );
+  }
+
+  BirthdayFormAction get action {
+    return id == null ? BirthdayFormAction.CREATE : BirthdayFormAction.EDIT;
   }
 
   BirthdayFormDataVM copyWith({
