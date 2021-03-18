@@ -4,40 +4,57 @@ import 'package:birthdaypal/features/birthday/model/presentation/birthday_form_d
 import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'birthday_form_state.dart';
 
 class BirthdayFormCubit extends Cubit<BirthdayFormState> {
-  BirthdayFormCubit() : super(BirthdayFormInitial());
+  BirthdayFormCubit()
+      : super(BirthdayFormState(
+          birthday: BirthdayFormDataVM(
+            name: "",
+            date: null,
+            color: Color(4280391411),
+          ),
+        ));
 
   void reset() {
-    emit(BirthdayFormInitial());
+    emit(BirthdayFormState(
+      birthday: BirthdayFormDataVM(
+        name: "",
+        date: null,
+        color: Color(4280391411),
+      ),
+    ));
   }
 
   void create() {
-    emit(BirthdayFormCreating());
+    emit(BirthdayFormState(
+      birthday: BirthdayFormDataVM(
+        name: "",
+        date: null,
+        color: const Color(4280391411),
+      ),
+    ));
   }
 
   void edit(BirthdayVM birthday) {
-    emit(BirthdayFormEditing(
+    emit(BirthdayFormState(
       birthday: BirthdayFormDataVM.fromBirthdayVM(birthday),
     ));
   }
 
   void setName(String name) {
-    emit(BirthdayFormEditing(
+    emit(BirthdayFormState(
       birthday: this.state.birthday.copyWith(name: name),
     ));
   }
 
   void setBirthday(DateTime date) {
-    emit(BirthdayFormEditing(
-        birthday: this.state.birthday.copyWith(date: date)));
+    emit(BirthdayFormState(birthday: this.state.birthday.copyWith(date: date)));
   }
 
   void setColor(Color color) {
-    emit(BirthdayFormEditing(
+    emit(BirthdayFormState(
         birthday: this.state.birthday.copyWith(color: color)));
   }
 }
