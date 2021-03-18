@@ -10,31 +10,15 @@ part 'birthday_form_state.dart';
 class BirthdayFormCubit extends Cubit<BirthdayFormState> {
   BirthdayFormCubit()
       : super(BirthdayFormState(
-          birthday: BirthdayFormDataVM(
-            name: "",
-            date: null,
-            color: Color(4280391411),
-          ),
+          birthday: BirthdayFormDataVM.defaultBD(),
         ));
 
   void reset() {
-    emit(BirthdayFormState(
-      birthday: BirthdayFormDataVM(
-        name: "",
-        date: null,
-        color: Color(4280391411),
-      ),
-    ));
+    emit(BirthdayFormState(birthday: BirthdayFormDataVM.defaultBD()));
   }
 
   void create() {
-    emit(BirthdayFormState(
-      birthday: BirthdayFormDataVM(
-        name: "",
-        date: null,
-        color: const Color(4280391411),
-      ),
-    ));
+    emit(BirthdayFormState(birthday: BirthdayFormDataVM.defaultBD()));
   }
 
   void edit(BirthdayVM birthday) {

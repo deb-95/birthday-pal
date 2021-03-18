@@ -9,7 +9,7 @@ class BirthdayFormDataVM {
   final Color color;
   final int? id;
 
-  BirthdayFormDataVM({
+  const BirthdayFormDataVM({
     required this.name,
     this.date,
     this.id,
@@ -22,6 +22,14 @@ class BirthdayFormDataVM {
       date: birthdayVM.date,
       name: birthdayVM.name,
       id: birthdayVM.id,
+    );
+  }
+
+  factory BirthdayFormDataVM.defaultBD() {
+    return const BirthdayFormDataVM(
+      name: "",
+      date: null,
+      color: Color(4280391411),
     );
   }
 
