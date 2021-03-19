@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:birthdaypal/app/config/enums.dart';
 import 'package:birthdaypal/features/birthday/model/presentation/birthday_vm.dart';
 
 class BirthdayFormDataVM {
@@ -8,7 +9,7 @@ class BirthdayFormDataVM {
   final Color color;
   final int? id;
 
-  BirthdayFormDataVM({
+  const BirthdayFormDataVM({
     required this.name,
     this.date,
     this.id,
@@ -24,6 +25,14 @@ class BirthdayFormDataVM {
     );
   }
 
+  factory BirthdayFormDataVM.defaultBD() {
+    return const BirthdayFormDataVM(
+      name: "",
+      date: null,
+      color: Color(4280391411),
+    );
+  }
+
   BirthdayVM toBirthdayVM() {
     return BirthdayVM(
       color: this.color,
@@ -31,6 +40,10 @@ class BirthdayFormDataVM {
       name: this.name,
       id: this.id,
     );
+  }
+
+  BirthdayFormAction get action {
+    return id == null ? BirthdayFormAction.CREATE : BirthdayFormAction.EDIT;
   }
 
   BirthdayFormDataVM copyWith({
